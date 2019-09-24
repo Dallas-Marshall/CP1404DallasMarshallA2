@@ -19,3 +19,13 @@ class Movie:
         """Return a string representation of Guitar."""
         return "{self.title},{self.year},{self.category},{self.is_watched}".format(self=self)
 
+    def watch_movie(self):
+        """Set a Movie as watched."""
+        if not Movie.IS_ALL_MOVIES_WATCHED:
+            if not self.is_watched:
+                self.is_watched = True
+                return print("{self.title} from {self.year} watched".format(self=self))
+            else:
+                return print("You have already watched {self.title}".format(self=self))
+        else:
+            return print("No more movies to watch!")

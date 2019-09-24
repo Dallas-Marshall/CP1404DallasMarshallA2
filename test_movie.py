@@ -27,6 +27,24 @@ def run_tests():
     print("Category:\n\tExpected: Comedy - <class 'str'>\n\tgot;      {} - {}".format(initial_movie.category,
                                                                                       type(initial_movie.category)))
     # TODO: Add more tests, as appropriate, for each method
+    # test watch_movie changes is_watched
+    test_movie_1 = Movie("Super-man", 2008, "Comedy", False)
+    print("\nTest watch_movie method:")
+    print("\tBefore - Expected False got {}".format(test_movie_1.is_watched))
+    test_movie_1.watch_movie()
+    print("\tAfter - Expected True got {}".format(test_movie_1.is_watched))
+
+    # Test condition of already watched movie
+    test_movie_2 = Movie("Super-man", 2008, "Comedy", True)
+    print("\nTest condition of already watched movie:\n\tExpected: You have already watched {}\n\tGot;"
+          .format(test_movie_2.title))
+    test_movie_2.watch_movie()
+
+    # test condition when all movies are watched
+    Movie.IS_ALL_MOVIES_WATCHED = True
+    test_movie_3 = Movie("Super-man", 2008, "Comedy", False)
+    print("\nTest condition when all movies are watched:\n\tExpected: No more movies to watch!\n\tGot;")
+    test_movie_3.watch_movie()
 
 
 run_tests()
