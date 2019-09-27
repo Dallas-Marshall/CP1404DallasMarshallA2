@@ -6,7 +6,6 @@
 
 class Movie:
     """Movie class to represent details of a movie."""
-    IS_ALL_MOVIES_WATCHED = False
 
     def __init__(self, title="", year=0, category="", is_watched=False):
         """Initialise a Movie."""
@@ -21,11 +20,14 @@ class Movie:
 
     def watch_movie(self):
         """Set a Movie as watched."""
-        if not Movie.IS_ALL_MOVIES_WATCHED:
-            if not self.is_watched:
-                self.is_watched = True
-                return print("{self.title} from {self.year} watched".format(self=self))
-            else:
-                return print("You have already watched {self.title}".format(self=self))
+        if not self.is_watched:
+            self.is_watched = True
+            return print("{self.title} from {self.year} watched".format(self=self))
         else:
-            return print("No more movies to watch!")
+            return print("You have already watched {self.title}".format(self=self))
+
+    def un_watch_movie(self):
+        """Set a movie as un-watched."""
+        if self.is_watched:
+            self.is_watched = False
+            return print("{self.title} from {self.year} un-watched".format(self=self))
