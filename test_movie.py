@@ -46,5 +46,12 @@ def run_tests():
     print("\nTest condition when all movies are watched:\n\tExpected: No more movies to watch!\n\tGot;")
     test_movie_3.watch_movie()
 
+    # test un_watch_movie changes is_watched
+    test_movie_4 = Movie("Super-man", 2008, "Comedy", True)
+    print("\nTest un_watch_movie method:")
+    print("\tBefore - Expected True got {}".format(test_movie_4.is_watched))
+    test_movie_4.un_watch_movie()
+    print("\tAfter - Expected False got {}".format(test_movie_4.is_watched))
+
 
 run_tests()
