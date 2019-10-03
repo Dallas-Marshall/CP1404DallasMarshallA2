@@ -57,6 +57,12 @@ def run_tests():
     print("\nTest set_movie_watched:")
     movie_collection.set_movie_watched(0)
     movie_collection.list_movies(35)
+    movie_collection.set_movie_watched(0)
+
+    print("\nTest bool_to_status:")
+    print(movie_collection)
+    movie_collection.bool_to_status()
+    print(movie_collection)
 
 
 run_tests()

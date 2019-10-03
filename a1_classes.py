@@ -16,6 +16,7 @@ def main():
     """Program is a list of movies that allows a user to track movies that they have watched and wish to watch."""
     movies = MovieCollection()
     movies.load_movies(FILE_NAME)
+    movies.sort(SORT_CONDITION)
     menu = """Menu:\nL - List movies\nA - Add new movie\nW - Watch a movie\nQ - Quit"""
     print("Movies To Watch 2.0 - by Dallas Marshall\n{} movies loaded\n{}".format(len(movies), menu))
     menu_selection = input(">>> ").upper()
@@ -48,7 +49,7 @@ def add_movie(movies):
     new_title = get_valid_selection("Title")
     new_year = get_valid_year()
     new_category = get_valid_selection("Category")
-    movies.add_movie(Movie(new_title, new_year, new_category, UNWATCHED))
+    movies.add_movie(Movie(new_title, new_year, new_category, False))
     print("{} ({} from {}) added to movie list".format(new_title, new_category, new_year))
     movies.sort(SORT_CONDITION)
 
@@ -110,20 +111,8 @@ def get_valid_year():
 
 def save_movies(movies):
     """Save movies to file."""
-    out_file = open('{}'.format(FILE_NAME), WATCHED)
-    movies.sort(key=operator.itemgetter(1, 0))
-    for movie in movies:
-        line = convert_list_to_string(movie)
-        out_file.write("{}\n".format(line))
-    out_file.close()
-
-
-# def convert_list_to_string(movie):
-#     """Return a list as a string."""
-#     separator = ','
-#     for index, element in enumerate(movie):
-#         movie[index] = str(element)
-#     return separator.join(movie)
+    movies.bool_to_status()
+    movies.save_movies(FILE_NAME)
 
 
 if __name__ == '__main__':

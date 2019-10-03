@@ -88,3 +88,11 @@ class MovieCollection:
         else:
             self.movies[movie_index].watch_movie()
             print("{} from {} watched".format(self.movies[movie_index].title, self.movies[movie_index].year))
+
+    def bool_to_status(self):
+        """Set is_watched to 'w' or 'u' ready for saving so that it matched sample output."""
+        for movie in self.movies:
+            if movie.is_watched:
+                movie.is_watched = 'w'
+            else:
+                movie.is_watched = 'u'
