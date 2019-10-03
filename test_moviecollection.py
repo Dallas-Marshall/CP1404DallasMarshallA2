@@ -42,5 +42,17 @@ def run_tests():
     print("\nTest get_number_un_watched")
     print("expected 4 got {}".format(movie_collection.get_number_un_watched()))
 
+    # Test length of movies
+    print("\nTest __len__:")
+    print("Expected 6 got {}".format(len(movie_collection)))
+
+    print("\nTest calculate_longest_title:")
+    print("Expected 34 got {}".format(movie_collection.calculate_longest_title()))
+
+    print("\nTest list_movies prints")
+    longest_title_length = 35
+    movie_collection.sort('year')
+    print(movie_collection.list_movies(longest_title_length))
+
 
 run_tests()

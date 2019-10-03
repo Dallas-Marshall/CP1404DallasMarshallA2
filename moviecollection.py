@@ -60,3 +60,24 @@ class MovieCollection:
     def sort(self, keyword):
         """Sort objects by keyword attribute."""
         self.movies.sort(key=attrgetter(keyword, "title"))
+
+    def __len__(self):
+        return len(self.movies)
+
+    def calculate_longest_title(self):
+        """Return longest movie title length."""
+        longest_title_length = 0
+        for movie in self.movies:
+            title_length = len(movie.title)
+            if title_length > longest_title_length:
+                longest_title_length = title_length
+        return longest_title_length
+
+    def list_movies(self, longest_title_length):
+        """Sort movies by year and prints formatted table labeling unwatched with *."""
+        for i, movie in enumerate(self.movies):
+            unwatched_string = ' '
+            if not movie.is_watched:
+                unwatched_string = '*'
+            print("{:2}. {} {:{}} - {:5} ({})".format(i, unwatched_string, movie.title, longest_title_length,
+                                                      movie.year, movie.category))

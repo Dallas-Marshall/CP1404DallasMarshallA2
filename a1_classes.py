@@ -1,24 +1,22 @@
-"""Copy of first assignment to reference"""
+"""Program from assignment 1, re-written using movie class."""
 # TODO: Copy your first assignment to this file, then update it to use Movie class
 # Optionally, you may also use MovieCollection class
 
 from movie import Movie
+from moviecollection import MovieCollection
 import operator
 
-INDEX_OF_TITLE = 0
-INDEX_OF_YEAR = 1
-INDEX_OF_CATEGORY = 2
-INDEX_OF_STATUS = 3
 FILE_NAME = 'movies.csv'
 WATCHED = 'w'
 UNWATCHED = 'u'
 
 
 def main():
-    """program is a list of movies that allows a user to track movies that they have watched and wish to watch."""
-    movies = read_file()
+    """Program is a list of movies that allows a user to track movies that they have watched and wish to watch."""
+    movies = MovieCollection()
+    movies.load_movies(FILE_NAME)
     menu = """Menu:\nL - List movies\nA - Add new movie\nW - Watch a movie\nQ - Quit"""
-    print("Movies To Watch 1.0 - by Dallas Marshall\n{} movies loaded\n{}".format(len(movies), menu))
+    print("Movies To Watch 2.0 - by Dallas Marshall\n{} movies loaded\n{}".format(len(movies), menu))
     menu_selection = input(">>> ").upper()
     while menu_selection != 'Q':
         if menu_selection == 'L':
@@ -35,17 +33,12 @@ def main():
     save_movies(movies)
 
 
-def read_file():
-    """Read the file containing movies saving as a list."""
-    movies = []
-    in_file = open('{}'.format(FILE_NAME), 'r')
-    for line in in_file:
-        line_str = line.strip().split(',')
-        movie = [line_str[INDEX_OF_TITLE], int(line_str[INDEX_OF_YEAR]), line_str[INDEX_OF_CATEGORY],
-                 line_str[INDEX_OF_STATUS]]
-        movies.append(movie)
-    in_file.close()
-    return movies
+def list_movies(movies):
+    longest_title_length = movies.calculate_longest_title()
+    movies.sort('year')
+    movies.list_movies(longest_title_length)
+    print("{} movies watched, {} movies still to watch".format(movies.get_number_watched(),
+                                                               movies.get_number_un_watched()))
 
 
 def add_movie(movies):
@@ -55,34 +48,6 @@ def add_movie(movies):
     new_category = get_valid_selection("Category")
     movies.append([new_title, new_year, new_category, UNWATCHED])
     print("{} ({} from {}) added to movie list".format(new_title, new_category, new_year))
-
-
-def list_movies(movies):
-    """Sort movies by year and prints formatted table labeling unwatched with *."""
-    movies.sort(key=operator.itemgetter(INDEX_OF_YEAR, INDEX_OF_TITLE))
-    for i in range(len(movies)):
-        unwatched_string = ' '
-        if not is_watched(movies, i):
-            unwatched_string = '*'
-        print("{:2}. {} {:{}} - {:5} ({})".format(i, unwatched_string, movies[i][INDEX_OF_TITLE],
-                                                  calculate_longest_title(movies), movies[i][INDEX_OF_YEAR],
-                                                  movies[i][INDEX_OF_CATEGORY]))
-    print("{} movies watched, {} movies still to watch".format(count_movies_status(movies, WATCHED),
-                                                               count_movies_status(movies, UNWATCHED)))
-
-
-def count_movies_status(movies, status):
-    """Return count of status e.g. (watched (w) or unwatched(u)."""
-    movie_count = 0
-    for i in range(len(movies)):
-        if movies[i][INDEX_OF_STATUS] == '{}'.format(status):
-            movie_count += 1
-    return movie_count
-
-
-def is_watched(movies, i):
-    """Return True if movie is watched, else returns False."""
-    return bool(movies[i][INDEX_OF_STATUS].lower() == WATCHED)
 
 
 def watch_movie(movies):
@@ -115,16 +80,6 @@ def get_valid_input(movies):
                 return movie_index
         except ValueError:
             print("Invalid input; enter a valid number")
-
-
-def calculate_longest_title(movies):
-    """Return longest movie title length."""
-    longest_title_length = 0
-    for movie in movies:
-        title_length = len(movie[INDEX_OF_TITLE])
-        if title_length > longest_title_length:
-            longest_title_length = title_length
-    return longest_title_length
 
 
 def get_valid_selection(prompt):
@@ -165,12 +120,12 @@ def save_movies(movies):
     out_file.close()
 
 
-def convert_list_to_string(movie):
-    """Return a list as a string."""
-    separator = ','
-    for index, element in enumerate(movie):
-        movie[index] = str(element)
-    return separator.join(movie)
+# def convert_list_to_string(movie):
+#     """Return a list as a string."""
+#     separator = ','
+#     for index, element in enumerate(movie):
+#         movie[index] = str(element)
+#     return separator.join(movie)
 
 
 if __name__ == '__main__':
