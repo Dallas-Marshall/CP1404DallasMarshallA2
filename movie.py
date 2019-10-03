@@ -20,14 +20,8 @@ class Movie:
 
     def watch_movie(self):
         """Set a Movie as watched."""
-        if not self.is_watched:
-            self.is_watched = True
-            return print("{self.title} from {self.year} watched".format(self=self))
-        else:
-            return print("You have already watched {self.title}".format(self=self))
+        self.is_watched = True
 
     def un_watch_movie(self):
         """Set a Movie as un-watched."""
-        if self.is_watched:
-            self.is_watched = False
-            return print("{self.title} from {self.year} un-watched".format(self=self))
+        self.is_watched = False
