@@ -9,6 +9,7 @@ import operator
 FILE_NAME = 'movies.csv'
 WATCHED = 'w'
 UNWATCHED = 'u'
+SORT_CONDITION = 'year'
 
 
 def main():
@@ -35,7 +36,8 @@ def main():
 
 def list_movies(movies):
     longest_title_length = movies.calculate_longest_title()
-    movies.sort('year')
+    movies.sort(SORT_CONDITION)
+
     movies.list_movies(longest_title_length)
     print("{} movies watched, {} movies still to watch".format(movies.get_number_watched(),
                                                                movies.get_number_un_watched()))
@@ -46,8 +48,9 @@ def add_movie(movies):
     new_title = get_valid_selection("Title")
     new_year = get_valid_year()
     new_category = get_valid_selection("Category")
-    movies.append([new_title, new_year, new_category, UNWATCHED])
+    movies.add_movie(Movie(new_title, new_year, new_category, UNWATCHED))
     print("{} ({} from {}) added to movie list".format(new_title, new_category, new_year))
+    movies.sort(SORT_CONDITION)
 
 
 def watch_movie(movies):
@@ -89,7 +92,7 @@ def get_valid_selection(prompt):
      prompt -- the string displayed to the user
      """
     user_input = input("{}: ".format(prompt))
-    while not user_input.strip():
+    while user_input == "":
         print("Input can not be blank")
         user_input = input("{}: ".format(prompt))
     return user_input
