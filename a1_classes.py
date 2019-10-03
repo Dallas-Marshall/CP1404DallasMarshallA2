@@ -1,4 +1,4 @@
-"""Program from assignment 1, re-written using movie class."""
+"""Program from assignment 1, re-written using Movie and MovieCollection classes.."""
 # TODO: Copy your first assignment to this file, then update it to use Movie class
 # Optionally, you may also use MovieCollection class
 
@@ -55,17 +55,12 @@ def add_movie(movies):
 
 def watch_movie(movies):
     """Set a chosen movie as watched."""
-    if count_movies_status(movies, UNWATCHED) == 0:
+    if movies.get_number_un_watched() == 0:
         return print("No more movies to watch!")
 
     print("Enter the number of a movie to mark as watched")
     movie_index = get_valid_input(movies)
-
-    if is_watched(movies, movie_index):
-        print("You have already watched {}".format(movies[movie_index][INDEX_OF_TITLE]))
-    else:
-        movies[movie_index][INDEX_OF_STATUS] = WATCHED
-        print("{} from {} watched".format(movies[movie_index][INDEX_OF_TITLE], movies[movie_index][INDEX_OF_YEAR]))
+    movies.set_movie_watched(movie_index)
 
 
 def get_valid_input(movies):

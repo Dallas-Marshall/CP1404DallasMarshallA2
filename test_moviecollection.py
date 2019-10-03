@@ -49,10 +49,14 @@ def run_tests():
     print("\nTest calculate_longest_title:")
     print("Expected 34 got {}".format(movie_collection.calculate_longest_title()))
 
-    print("\nTest list_movies prints")
+    print("\nTest list_movies prints to console:")
     longest_title_length = 35
     movie_collection.sort('year')
-    print(movie_collection.list_movies(longest_title_length))
+    movie_collection.list_movies(longest_title_length)
+
+    print("\nTest set_movie_watched:")
+    movie_collection.set_movie_watched(0)
+    movie_collection.list_movies(35)
 
 
 run_tests()

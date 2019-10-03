@@ -14,10 +14,12 @@ class MovieCollection:
         """Return a string representation of movie_collection."""
         return str([str(movie) for movie in self.movies])
 
+    def __len__(self):
+        return len(self.movies)
+
     def add_movie(self, movie):
         """Add a movie to the list of movies."""
         self.movies.append(movie)
-        print("{self.title} ({self.category} from {self.year}) added to movie list".format(self=movie))
 
     def get_number_un_watched(self):
         """Returns number of movies unwatched."""
@@ -61,9 +63,6 @@ class MovieCollection:
         """Sort objects by keyword attribute."""
         self.movies.sort(key=attrgetter(keyword, "title"))
 
-    def __len__(self):
-        return len(self.movies)
-
     def calculate_longest_title(self):
         """Return longest movie title length."""
         longest_title_length = 0
@@ -81,3 +80,11 @@ class MovieCollection:
                 unwatched_string = '*'
             print("{:2}. {} {:{}} - {:5} ({})".format(i, unwatched_string, movie.title, longest_title_length,
                                                       movie.year, movie.category))
+
+    def set_movie_watched(self, movie_index):
+        """Set movie at specified index watched if not already."""
+        if self.movies[movie_index].is_watched:
+            print("You have already watched {}".format(self.movies[movie_index].title))
+        else:
+            self.movies[movie_index].watch_movie()
+            print("{} from {} watched".format(self.movies[movie_index].title, self.movies[movie_index].year))
