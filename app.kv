@@ -11,6 +11,26 @@ BoxLayout:
             values: app.sort_options
             # on_text is the event (not on_release) when the text updates (spinner option is selected)
             # note that on_text runs even when the text is set for the very first time
+        Label:
+            text: 'Add New Movie...'
+        Label:
+            text: 'Title:'
+        TextInput:
+            text: ''
+        Label:
+            text: 'Category:'
+        TextInput:
+            text: ''
+        Label:
+            text: 'Year:'
+        TextInput:
+            text: ''
+        Button:
+            text: 'Add Movie'
+            id: add_button
+        Button:
+            text: 'Clear'
+            id: clear_button
     BoxLayout:
         orientation: 'vertical'
         Label:
