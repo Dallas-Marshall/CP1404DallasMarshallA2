@@ -1,2 +1,21 @@
-# TODO: Create your Kivy layout in the kv language here
 BoxLayout:
+    orientation: 'horizontal'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Sort by:'
+        Spinner:
+            id: sort_by_selection
+            text: app.current_selection
+            # values takes a list - could be a literal here or variable in app
+            values: app.sort_options
+            # on_text is the event (not on_release) when the text updates (spinner option is selected)
+            # note that on_text runs even when the text is set for the very first time
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: app.movies_to_watch_text
+        # this layout is populated with Button widgets in app code
+            id: entries_box
+        Label:
+            text: app.display_text

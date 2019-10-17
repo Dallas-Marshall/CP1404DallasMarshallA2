@@ -1,10 +1,7 @@
-"""Program from assignment 1, re-written using Movie and MovieCollection classes.."""
-# TODO: Copy your first assignment to this file, then update it to use Movie class
-# Optionally, you may also use MovieCollection class
+"""Program from assignment 1, re-written using Movie and MovieCollection classes."""
 
 from movie import Movie
 from moviecollection import MovieCollection
-import operator
 
 FILE_NAME = 'movies.csv'
 WATCHED = 'w'
