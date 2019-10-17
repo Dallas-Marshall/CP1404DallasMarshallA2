@@ -33,9 +33,15 @@ BoxLayout:
             id: clear_button
     BoxLayout:
         orientation: 'vertical'
-        Label:
-            text: app.movies_to_watch_text
-        # this layout is populated with Button widgets in app code
+        BoxLayout:
+            Label:
+                id: movies_to_watch_label
+                text: app.movies_to_watch_text
+        BoxLayout:
+            orientation: 'vertical'
+            # this layout is populated with Button widgets in app code
             id: entries_box
-        Label:
-            text: app.display_text
+        BoxLayout:
+            Label:
+                id: movies_to_watch_label
+                text: app.movies_to_watch_text
