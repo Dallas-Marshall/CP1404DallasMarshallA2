@@ -19,7 +19,7 @@ sort_codes = ['year', 'title', 'category', 'is_watched']
 class MoviesToWatchApp(App):
     """Kivy app constructor class to create GUI for assignment 2."""
     movies_to_watch_text = StringProperty()
-    display_text = StringProperty()
+    status_text = StringProperty()
     current_selection = StringProperty()
     sort_options = ListProperty()
 
@@ -45,14 +45,18 @@ class MoviesToWatchApp(App):
             # (although text and id are the same in this case, you should see how this works)
             temp_button = Button(text=movie.title, id=movie.title)
             temp_button.bind(on_release=self.handle_press)
+            temp_button.movie = movie
             # add the button to the "entries_box" layout widget
             self.root.ids.entries_box.add_widget(temp_button)
 
     def handle_press(self, instance):
         """Handle pressing movie buttons."""
-        name = instance.id
+        movie = instance.movie
         # update status text
-        self.display_text = "TODO {}".format(name)
+        unwatched_string = 'have watched'
+        if not movie.is_watched:
+            unwatched_string = 'need to watch'
+        self.status_text = "You {} {}".format(unwatched_string, movie.title)
 
 
 if __name__ == '__main__':
