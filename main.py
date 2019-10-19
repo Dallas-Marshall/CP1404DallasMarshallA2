@@ -13,7 +13,7 @@ from kivy.properties import StringProperty
 from kivy.properties import ListProperty
 from kivy.uix.button import Button
 
-sort_codes = ['year', 'title', 'category', 'is_watched']
+spinner_options_to_keyword = {'Year': 'year', 'Title': 'title', 'Category': 'category', 'Watched': 'is_watched'}
 
 
 class MoviesToWatchApp(App):
@@ -33,7 +33,7 @@ class MoviesToWatchApp(App):
         """Build the Kivy GUI."""
         self.title = "Movies To Watch 2.0"
         self.root = Builder.load_file('app.kv')
-        self.sort_options = sorted(sort_codes)
+        self.sort_options = sorted(spinner_options_to_keyword.keys())
         self.current_selection = self.sort_options[0]
         self.create_widgets()
         return self.root
@@ -57,6 +57,11 @@ class MoviesToWatchApp(App):
         if not movie.is_watched:
             unwatched_string = 'need to watch'
         self.status_text = "You {} {}".format(unwatched_string, movie.title)
+
+    def change_spinner_selection(self, new_sort_selection):
+        """Handle changing spinner sort condition."""
+        self.current_selection = new_sort_selection
+        print("changed to", new_sort_selection)
 
 
 if __name__ == '__main__':
