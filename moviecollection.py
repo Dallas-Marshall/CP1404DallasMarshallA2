@@ -59,7 +59,7 @@ class MovieCollection:
             out_file.write("{}\n".format(movie))
         out_file.close()
 
-    def sort(self, keyword):
+    def sort_movies(self, keyword):
         """Sort objects by keyword attribute."""
         self.movies.sort(key=attrgetter(keyword, "title"))
 

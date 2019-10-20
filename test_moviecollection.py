@@ -25,11 +25,11 @@ def run_tests():
 
     # Test sorting movies
     print("\nTest sorting - year:")
-    movie_collection.sort("year")
+    movie_collection.sort_movies("year")
     print(movie_collection)
 
     print("\nTest sorting - title:")
-    movie_collection.sort("title")
+    movie_collection.sort_movies("title")
     print(movie_collection)
 
     # Test saving movies (check CSV file manually to see results)
@@ -51,7 +51,7 @@ def run_tests():
 
     print("\nTest list_movies prints to console:")
     longest_title_length = 35
-    movie_collection.sort('year')
+    movie_collection.sort_movies('year')
     movie_collection.list_movies(longest_title_length)
 
     print("\nTest set_movie_watched:")

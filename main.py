@@ -72,6 +72,9 @@ class MoviesToWatchApp(App):
         """Handle changing spinner sort condition."""
         self.current_selection = new_sort_selection
         print("changed to", new_sort_selection)
+        print(self.movies)
+        sorted_movies = self.movies.sort_movies(spinner_options_to_keyword[new_sort_selection])
+        print(sorted_movies)
 
 
 if __name__ == '__main__':

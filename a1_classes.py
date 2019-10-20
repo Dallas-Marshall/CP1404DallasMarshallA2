@@ -13,7 +13,7 @@ def main():
     """Program is a list of movies that allows a user to track movies that they have watched and wish to watch."""
     movies = MovieCollection()
     movies.load_movies(FILE_NAME)
-    movies.sort(SORT_CONDITION)
+    movies.sort_movies(SORT_CONDITION)
     menu = """Menu:\nL - List movies\nA - Add new movie\nW - Watch a movie\nQ - Quit"""
     print("Movies To Watch 2.0 - by Dallas Marshall\n{} movies loaded\n{}".format(len(movies), menu))
     menu_selection = input(">>> ").upper()
@@ -34,7 +34,7 @@ def main():
 
 def list_movies(movies):
     longest_title_length = movies.calculate_longest_title()
-    movies.sort(SORT_CONDITION)
+    movies.sort_movies(SORT_CONDITION)
 
     movies.list_movies(longest_title_length)
     print("{} movies watched, {} movies still to watch".format(movies.get_number_watched(),
@@ -48,7 +48,7 @@ def add_movie(movies):
     new_category = get_valid_selection("Category")
     movies.add_movie(Movie(new_title, new_year, new_category, False))
     print("{} ({} from {}) added to movie list".format(new_title, new_category, new_year))
-    movies.sort(SORT_CONDITION)
+    movies.sort_movies(SORT_CONDITION)
 
 
 def watch_movie(movies):
