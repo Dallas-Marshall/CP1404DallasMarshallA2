@@ -48,8 +48,7 @@ BoxLayout:
         orientation: 'vertical'
         Label:
             id: movies_to_watch_label
-#                text: app.movies_to_watch_text TODO
-            text: "Top"
+            text: app.movies_to_watch_text
             size_hint_y: None
             height: 55
 #            size_hint_x: 1.5
@@ -57,6 +56,7 @@ BoxLayout:
             orientation: 'vertical'
             # this layout is populated with movie Button widgets in app code main.py
             id: entries_box
+#            on_press: self.background_color = app.set_button_color(self)
 #            size_hint_x: 1.5
         Label:
             id: status_label

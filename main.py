@@ -36,6 +36,8 @@ class MoviesToWatchApp(App):
         self.sort_options = sorted(spinner_options_to_keyword.keys())
         self.current_selection = self.sort_options[0]
         self.create_widgets()
+        self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
+                                                                      self.movies.get_number_watched())
         return self.root
 
     def create_widgets(self):
@@ -61,12 +63,26 @@ class MoviesToWatchApp(App):
     def handle_press(self, instance):
         """Handle pressing movie buttons."""
         movie = instance.movie
+        # toggle watched / un watched
+        if movie.is_watched:
+            movie.un_watch_movie()
+        else:
+            movie.watch_movie()
+
+        # update button colour
+        instance.background_color = self.set_button_color(movie)
+
         # update status text
         unwatched_string = 'have watched'
         if not movie.is_watched:
             # Change status text if movie is unwatched
             unwatched_string = 'need to watch'
         self.status_text = "You {} {}".format(unwatched_string, movie.title)
+
+        # update movies to watch text
+        self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
+                                                                      self.movies.get_number_watched())
+
 
     def change_spinner_selection(self, new_sort_selection):
         """Handle changing spinner sort condition."""
