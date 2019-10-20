@@ -1,46 +1,66 @@
 BoxLayout:
     orientation: 'horizontal'
+# Left side of GUI
     BoxLayout:
         orientation: 'vertical'
         Label:
             text: 'Sort by:'
+            size_hint_x: 0.5
         Spinner:
             id: sort_selection_spinner
             text: app.current_selection
+            size_hint_x: 0.5
             # values takes a list of sorting options
             values: app.sort_options
             on_text: app.change_spinner_selection(self.text)
+            on_text: app.sort_movie_buttons
         Label:
             text: 'Add New Movie...'
+            size_hint_x: 0.5
         Label:
             text: 'Title:'
+            size_hint_x: 0.5
         TextInput:
             text: ''
+            size_hint_x: 0.5
         Label:
             text: 'Category:'
+            size_hint_x: 0.5
         TextInput:
             text: ''
+            size_hint_x: 0.5
         Label:
             text: 'Year:'
+            size_hint_x: 0.5
         TextInput:
             text: ''
+            size_hint_x: 0.5
         Button:
             text: 'Add Movie'
             id: add_button
+            size_hint_x: 0.5
         Button:
             text: 'Clear'
             id: clear_button
+            size_hint_x: 0.5
+# Right side of GUI
     BoxLayout:
         orientation: 'vertical'
-        BoxLayout:
-            Label:
-                id: movies_to_watch_label
-                text: app.movies_to_watch_text
+        Label:
+            id: movies_to_watch_label
+#                text: app.movies_to_watch_text TODO
+            text: "Top"
+            size_hint_y: None
+            height: 55
+#            size_hint_x: 1.5
         BoxLayout:
             orientation: 'vertical'
-            # this layout is populated with Button widgets in app code
+            # this layout is populated with movie Button widgets in app code main.py
             id: entries_box
-        BoxLayout:
-            Label:
-                id: status_label
-                text: app.status_text
+#            size_hint_x: 1.5
+        Label:
+            id: status_label
+            text: app.status_text
+            size_hint_y: None
+            height: 55
+#            size_hint_x: 1.5

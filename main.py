@@ -41,13 +41,22 @@ class MoviesToWatchApp(App):
     def create_widgets(self):
         """Create buttons from MovieCollection entries and add them to the GUI."""
         for movie in self.movies.movies:
+            display_color = self.set_button_color(movie)
             # create a button for each data entry, specifying the text and id
-            # (although text and id are the same in this case, you should see how this works)
-            temp_button = Button(text=movie.title, id=movie.title)
+            temp_button = Button(text=movie.title, id=movie.title, background_color=display_color)
             temp_button.bind(on_release=self.handle_press)
+            # Store a reference to the movie object in the button object
             temp_button.movie = movie
             # add the button to the "entries_box" layout widget
             self.root.ids.entries_box.add_widget(temp_button)
+
+    @staticmethod
+    def set_button_color(movie):
+        """Set color code depending on movie.is_watched."""
+        display_color = (1, 0, 1, 1)
+        if movie.is_watched:
+            display_color = (1, 0, 0, 1)
+        return display_color
 
     def handle_press(self, instance):
         """Handle pressing movie buttons."""
@@ -55,6 +64,7 @@ class MoviesToWatchApp(App):
         # update status text
         unwatched_string = 'have watched'
         if not movie.is_watched:
+            # Change status text if movie is unwatched
             unwatched_string = 'need to watch'
         self.status_text = "You {} {}".format(unwatched_string, movie.title)
 
