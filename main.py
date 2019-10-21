@@ -12,6 +12,7 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.properties import ListProperty
 from kivy.uix.button import Button
+from movie import Movie
 
 spinner_options_to_keyword = {'Year': 'year', 'Title': 'title', 'Category': 'category', 'Watched': 'is_watched'}
 
@@ -45,7 +46,10 @@ class MoviesToWatchApp(App):
         for movie in self.movies.movies:
             display_color = self.set_button_color(movie)
             # create a button for each data entry, specifying the text and id
-            temp_button = Button(text=movie.title, id=movie.title, background_color=display_color)
+            temp_button = Button(
+                text=self.display_watched(movie), id=movie.title, background_color=display_color)
+            # text="{self.title} ({self.category} from {self.year})".format(self=movie),
+
             temp_button.bind(on_release=self.handle_press)
             # Store a reference to the movie object in the button object
             temp_button.movie = movie
@@ -62,35 +66,69 @@ class MoviesToWatchApp(App):
 
     def handle_press(self, instance):
         """Handle pressing movie buttons."""
-        movie = instance.movie
         # toggle watched / un watched
-        if movie.is_watched:
-            movie.un_watch_movie()
+        # print(movie.is_watched)
+        if instance.movie.is_watched:
+            instance.movie.un_watch_movie()
+
         else:
-            movie.watch_movie()
-
+            instance.movie.watch_movie()
+        # print(movie.is_watched)
         # update button colour
-        instance.background_color = self.set_button_color(movie)
-
+        instance.background_color = self.set_button_color(instance.movie)
         # update status text
-        unwatched_string = 'have watched'
-        if not movie.is_watched:
-            # Change status text if movie is unwatched
-            unwatched_string = 'need to watch'
-        self.status_text = "You {} {}".format(unwatched_string, movie.title)
+        unwatched_string = 'need to watch'
+        if instance.movie.is_watched:
+            unwatched_string = 'have watched'
+        # Change status text if movie is unwatched
+        self.status_text = "You {} {}".format(unwatched_string, instance.movie.title)
+        instance.text = self.display_watched(instance.movie)
 
         # update movies to watch text
         self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
                                                                       self.movies.get_number_watched())
 
-
     def change_spinner_selection(self, new_sort_selection):
         """Handle changing spinner sort condition."""
         self.current_selection = new_sort_selection
         print("changed to", new_sort_selection)
-        print(self.movies)
-        sorted_movies = self.movies.sort_movies(spinner_options_to_keyword[new_sort_selection])
-        print(sorted_movies)
+        # print(self.movies)
+        # sorted_movies = self.movies.sort_movies(spinner_options_to_keyword[new_sort_selection])
+        # print(sorted_movies)
+
+    def handle_press_add_movie(self, new_title, new_year, new_category):
+        print(new_category, new_year, new_title)
+        # TODO add error checking to add movie input and move year as integer remove int() from add line
+        self.movies.add_movie(Movie(new_title, int(new_year), new_category, False))
+
+        display_color = (1, 0, 1, 1)
+        # create a button for new movie
+        temp_button = Button(text="{} ({} from {})".format(new_title, new_category, new_year), id=new_title,
+                             background_color=display_color)
+        temp_button.bind(on_release=self.handle_press)
+        # Store a reference to the movie object in the button object
+        # new movie was appended to end of MovieCollection list therefore it is the last element currently
+        temp_button.movie = self.movies.movies[-1]
+        # add the button to the "entries_box" layout widget
+        self.root.ids.entries_box.add_widget(temp_button)
+        # clear text fields in entry boxes
+        self.clear_fields()
+        # TODO SORT MOVIES LIST
+
+    def clear_fields(self):
+        self.root.ids.new_title.text = ''
+        self.root.ids.new_year.text = ''
+        self.root.ids.new_category.text = ''
+
+    @staticmethod
+    def display_watched(instance):
+        """Display 'watched' after titles that have been watched."""
+        watched_string = 'watched'
+        if not instance.is_watched:
+            watched_string = ''
+        button_display_text = instance.text = "{} ({} from {}) {}".format(instance.title, instance.category,
+                                                                          instance.year, watched_string)
+        return button_display_text
 
 
 if __name__ == '__main__':
