@@ -47,12 +47,12 @@ BoxLayout:
         Button:
             text: 'Add Movie'
             id: add_button
-            on_press: app.press_add_movie(new_title.text, new_year.text, new_category.text)
+            on_press: app.handle_press_add_movie(new_title.text, new_year.text, new_category.text)
             size_hint_x: 0.5
         Button:
             text: 'Clear'
             id: clear_button
-            on_press: app.clear_fields
+            on_press: app.clear_fields()
             size_hint_x: 0.5
 # Right side of GUI
     BoxLayout:

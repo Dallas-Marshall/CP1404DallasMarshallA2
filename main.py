@@ -70,10 +70,8 @@ class MoviesToWatchApp(App):
         # print(movie.is_watched)
         if instance.movie.is_watched:
             instance.movie.un_watch_movie()
-
         else:
             instance.movie.watch_movie()
-        # print(movie.is_watched)
         # update button colour
         instance.background_color = self.set_button_color(instance.movie)
         # update status text
@@ -97,28 +95,53 @@ class MoviesToWatchApp(App):
         # print(sorted_movies)
 
     def handle_press_add_movie(self, new_title, new_year, new_category):
-        print(new_category, new_year, new_title)
         # TODO add error checking to add movie input and move year as integer remove int() from add line
-        self.movies.add_movie(Movie(new_title, int(new_year), new_category, False))
-
-        display_color = (1, 0, 1, 1)
-        # create a button for new movie
-        temp_button = Button(text="{} ({} from {})".format(new_title, new_category, new_year), id=new_title,
-                             background_color=display_color)
-        temp_button.bind(on_release=self.handle_press)
-        # Store a reference to the movie object in the button object
-        # new movie was appended to end of MovieCollection list therefore it is the last element currently
-        temp_button.movie = self.movies.movies[-1]
-        # add the button to the "entries_box" layout widget
-        self.root.ids.entries_box.add_widget(temp_button)
-        # clear text fields in entry boxes
-        self.clear_fields()
+        if self.is_valid_inputs(new_title, new_year, new_category):
+            self.movies.add_movie(Movie(new_title, int(new_year), new_category, False))
+            display_color = (1, 0, 1, 1)
+            # create a button for new movie
+            temp_button = Button(text="{} ({} from {})".format(new_title, new_category, new_year), id=new_title,
+                                 background_color=display_color)
+            temp_button.bind(on_release=self.handle_press)
+            # Store a reference to the movie object in the button object
+            # new movie was appended to end of MovieCollection list therefore it is the last element currently
+            temp_button.movie = self.movies.movies[-1]
+            # add the button to the "entries_box" layout widget
+            self.root.ids.entries_box.add_widget(temp_button)
+            # clear text fields in entry boxes
+            self.clear_fields()
         # TODO SORT MOVIES LIST
+
+    def is_valid_inputs(self, title, year, category):
+        """Check if user inputs meet requirements."""
+        input_fields = [title, year, category]
+        # check no empty input fields
+        for field in input_fields:
+            if field == '':
+                self.status_text = "All fields must be completed"
+                return False
+        # check year is a number
+        try:
+            year = int(year)
+        except ValueError:
+            self.status_text = "Please enter a valid number"
+            return False
+        # check year is >=0
+        if not year >= 0:
+            self.status_text = "Year must be >=0"
+            return False
+        # check valid category
+        valid_category_options = ["Action", "Comedy", "Documentary", "Drama", 'Fantasy', 'Thriller']
+        if category not in valid_category_options:
+            self.status_text = "Category must be one of Action, Comedy, Documentary, Drama, Fantasy, Thriller"
+            return False
+        return True
 
     def clear_fields(self):
         self.root.ids.new_title.text = ''
         self.root.ids.new_year.text = ''
         self.root.ids.new_category.text = ''
+        self.status_text = ''
 
     @staticmethod
     def display_watched(instance):
