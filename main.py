@@ -36,7 +36,7 @@ class MoviesToWatchApp(App):
         self.root = Builder.load_file('app.kv')
         self.sort_options = sorted(spinner_options_to_keyword.keys())
         self.current_selection = self.sort_options[0]
-        self.create_widgets()
+        # self.create_widgets()
         self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
                                                                       self.movies.get_number_watched())
         return self.root
@@ -48,8 +48,6 @@ class MoviesToWatchApp(App):
             # create a button for each data entry, specifying the text and id
             temp_button = Button(
                 text=self.display_watched(movie), id=movie.title, background_color=display_color)
-            # text="{self.title} ({self.category} from {self.year})".format(self=movie),
-
             temp_button.bind(on_release=self.handle_press)
             # Store a reference to the movie object in the button object
             temp_button.movie = movie
@@ -67,7 +65,6 @@ class MoviesToWatchApp(App):
     def handle_press(self, instance):
         """Handle pressing movie buttons."""
         # toggle watched / un watched
-        # print(movie.is_watched)
         if instance.movie.is_watched:
             instance.movie.un_watch_movie()
         else:
@@ -81,7 +78,7 @@ class MoviesToWatchApp(App):
         # Change status text if movie is unwatched
         self.status_text = "You {} {}".format(unwatched_string, instance.movie.title)
         instance.text = self.display_watched(instance.movie)
-
+        self.update_movie_buttons()
         # update movies to watch text
         self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
                                                                       self.movies.get_number_watched())
@@ -89,13 +86,14 @@ class MoviesToWatchApp(App):
     def change_spinner_selection(self, new_sort_selection):
         """Handle changing spinner sort condition."""
         self.current_selection = new_sort_selection
-        print("changed to", new_sort_selection)
-        # print(self.movies)
-        # sorted_movies = self.movies.sort_movies(spinner_options_to_keyword[new_sort_selection])
-        # print(sorted_movies)
+        self.update_movie_buttons()
+
+    def update_movie_buttons(self):
+        self.movies.sort_movies(spinner_options_to_keyword[self.current_selection])
+        self.root.ids.entries_box.clear_widgets()
+        self.create_widgets()
 
     def handle_press_add_movie(self, new_title, new_year, new_category):
-        # TODO add error checking to add movie input and move year as integer remove int() from add line
         if self.is_valid_inputs(new_title, new_year, new_category):
             self.movies.add_movie(Movie(new_title, int(new_year), new_category, False))
             display_color = (1, 0, 1, 1)
@@ -106,10 +104,10 @@ class MoviesToWatchApp(App):
             # Store a reference to the movie object in the button object
             # new movie was appended to end of MovieCollection list therefore it is the last element currently
             temp_button.movie = self.movies.movies[-1]
-            # add the button to the "entries_box" layout widget
-            self.root.ids.entries_box.add_widget(temp_button)
             # clear text fields in entry boxes
             self.clear_fields()
+            self.update_movie_buttons()
+
         # TODO SORT MOVIES LIST
 
     def is_valid_inputs(self, title, year, category):
