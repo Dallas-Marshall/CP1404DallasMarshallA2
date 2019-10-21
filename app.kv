@@ -21,27 +21,38 @@ BoxLayout:
             text: 'Title:'
             size_hint_x: 0.5
         TextInput:
+            id: new_title
             text: ''
             size_hint_x: 0.5
+            multiline: False
+            write_tab: False
         Label:
             text: 'Category:'
             size_hint_x: 0.5
         TextInput:
+            id: new_category
             text: ''
             size_hint_x: 0.5
+            multiline: False
+            write_tab: False
         Label:
             text: 'Year:'
             size_hint_x: 0.5
         TextInput:
+            id: new_year
             text: ''
             size_hint_x: 0.5
+            multiline: False
+            write_tab: False
         Button:
             text: 'Add Movie'
             id: add_button
+            on_press: app.press_add_movie(new_title.text, new_year.text, new_category.text)
             size_hint_x: 0.5
         Button:
             text: 'Clear'
             id: clear_button
+            on_press: app.clear_fields
             size_hint_x: 0.5
 # Right side of GUI
     BoxLayout:
@@ -56,7 +67,6 @@ BoxLayout:
             orientation: 'vertical'
             # this layout is populated with movie Button widgets in app code main.py
             id: entries_box
-#            on_press: self.background_color = app.set_button_color(self)
 #            size_hint_x: 1.5
         Label:
             id: status_label
