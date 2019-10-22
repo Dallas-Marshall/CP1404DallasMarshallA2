@@ -1,6 +1,5 @@
 BoxLayout:
     orientation: 'horizontal'
-    # Left side of GUI
     BoxLayout:
         orientation: 'vertical'
         size_hint_x: None
@@ -10,7 +9,6 @@ BoxLayout:
         Spinner:
             id: sort_selection_spinner
             text: app.current_selection
-            # values takes a list of sorting options
             values: app.sort_options
             on_text: app.change_spinner_selection(self.text)
         Label:
@@ -44,7 +42,6 @@ BoxLayout:
             text: 'Clear'
             id: clear_button
             on_press: app.clear_fields()
-    # Right side of GUI
     BoxLayout:
         orientation: 'vertical'
         Label:
@@ -54,7 +51,6 @@ BoxLayout:
             height: 55
         BoxLayout:
             orientation: 'vertical'
-            # this layout is populated with movie Button widgets in app code main.py
             id: entries_box
         Label:
             id: status_label
