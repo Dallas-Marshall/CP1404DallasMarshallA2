@@ -1,11 +1,9 @@
-"""Program from assignment 1, re-written using Movie and MovieCollection classes."""
+"""Movie program from assignment 1, re-written using Movie and MovieCollection classes."""
 
 from movie import Movie
 from moviecollection import MovieCollection
 
 FILE_NAME = 'movies.csv'
-WATCHED = 'w'
-UNWATCHED = 'u'
 SORT_CONDITION = 'year'
 
 
@@ -55,7 +53,6 @@ def watch_movie(movies):
     """Set a chosen movie as watched."""
     if movies.get_number_un_watched() == 0:
         return print("No more movies to watch!")
-
     print("Enter the number of a movie to mark as watched")
     movie_index = get_valid_input(movies)
     movies.set_movie_watched(movie_index)
