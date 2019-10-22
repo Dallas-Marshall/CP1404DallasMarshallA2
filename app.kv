@@ -1,60 +1,50 @@
 BoxLayout:
     orientation: 'horizontal'
-# Left side of GUI
+    # Left side of GUI
     BoxLayout:
         orientation: 'vertical'
+        size_hint_x: None
+        width: 200
         Label:
             text: 'Sort by:'
-            size_hint_x: 0.5
         Spinner:
             id: sort_selection_spinner
             text: app.current_selection
-            size_hint_x: 0.5
             # values takes a list of sorting options
             values: app.sort_options
             on_text: app.change_spinner_selection(self.text)
-#            on_text: app.sort_selection_spinner
         Label:
             text: 'Add New Movie...'
-            size_hint_x: 0.5
         Label:
             text: 'Title:'
-            size_hint_x: 0.5
         TextInput:
             id: new_title
             text: ''
-            size_hint_x: 0.5
             multiline: False
             write_tab: False
         Label:
             text: 'Category:'
-            size_hint_x: 0.5
         TextInput:
             id: new_category
             text: ''
-            size_hint_x: 0.5
             multiline: False
             write_tab: False
         Label:
             text: 'Year:'
-            size_hint_x: 0.5
         TextInput:
             id: new_year
             text: ''
-            size_hint_x: 0.5
             multiline: False
             write_tab: False
         Button:
             text: 'Add Movie'
             id: add_button
             on_press: app.handle_press_add_movie(new_title.text, new_year.text, new_category.text)
-            size_hint_x: 0.5
         Button:
             text: 'Clear'
             id: clear_button
             on_press: app.clear_fields()
-            size_hint_x: 0.5
-# Right side of GUI
+    # Right side of GUI
     BoxLayout:
         orientation: 'vertical'
         Label:
@@ -62,15 +52,12 @@ BoxLayout:
             text: app.movies_to_watch_text
             size_hint_y: None
             height: 55
-#            size_hint_x: 1.5
         BoxLayout:
             orientation: 'vertical'
             # this layout is populated with movie Button widgets in app code main.py
             id: entries_box
-#            size_hint_x: 1.5
         Label:
             id: status_label
             text: app.status_text
             size_hint_y: None
             height: 55
-#            size_hint_x: 1.5
