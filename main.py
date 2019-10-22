@@ -4,8 +4,6 @@ Date: 17-10-2019
 Brief Project Description: Graphical User Interface using kivy for assignment 2.
 GitHub URL: https://github.com/cp1404-students/2019-2-a2-Dallas-Marshall
 """
-# TODO: Create your main program in this file, using the MoviesToWatchApp class
-
 from kivy.app import App
 from moviecollection import MovieCollection
 from kivy.lang import Builder
@@ -14,7 +12,10 @@ from kivy.properties import ListProperty
 from kivy.uix.button import Button
 from movie import Movie
 
-spinner_options_to_keyword = {'Year': 'year', 'Title': 'title', 'Category': 'category', 'Watched': 'is_watched'}
+SPINNER_OPTIONS_TO_KEYWORD = {'Year': 'year', 'Title': 'title', 'Category': 'category', 'Watched': 'is_watched'}
+WATCHED_COLOR = (1, 0, 0, 1)
+UN_WATCHED_COLOR = (1, 0, 1, 1)
+FILE_NAME = 'movies.csv'
 
 
 class MoviesToWatchApp(App):
@@ -25,30 +26,30 @@ class MoviesToWatchApp(App):
     sort_options = ListProperty()
 
     def __init__(self, **kwargs):
-        """Load movies from movies.csv."""
+        """Load movies from file."""
         super().__init__(**kwargs)
-        self.movies = MovieCollection()
-        self.movies.load_movies('movies.csv')
+        self.movie_collection = MovieCollection()
+        self.movie_collection.load_movies(FILE_NAME)
 
     def build(self):
         """Build the Kivy GUI."""
         self.title = "Movies To Watch 2.0"
         self.root = Builder.load_file('app.kv')
-        self.sort_options = sorted(spinner_options_to_keyword.keys())
+        self.sort_options = sorted(SPINNER_OPTIONS_TO_KEYWORD.keys())
         self.current_selection = self.sort_options[0]
         # self.create_widgets()
-        self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
-                                                                      self.movies.get_number_watched())
+        self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movie_collection.get_number_un_watched(),
+                                                                      self.movie_collection.get_number_watched())
         return self.root
 
     def create_widgets(self):
         """Create buttons from MovieCollection entries and add them to the GUI."""
-        for movie in self.movies.movies:
+        for movie in self.movie_collection.movies:
             display_color = self.set_button_color(movie)
             # create a button for each data entry, specifying the text and id
             temp_button = Button(
                 text=self.display_watched(movie), id=movie.title, background_color=display_color)
-            temp_button.bind(on_release=self.handle_press)
+            temp_button.bind(on_release=self.handle_press_movie)
             # Store a reference to the movie object in the button object
             temp_button.movie = movie
             # add the button to the "entries_box" layout widget
@@ -57,12 +58,12 @@ class MoviesToWatchApp(App):
     @staticmethod
     def set_button_color(movie):
         """Set color code depending on movie.is_watched."""
-        display_color = (1, 0, 1, 1)
+        display_color = UN_WATCHED_COLOR
         if movie.is_watched:
-            display_color = (1, 0, 0, 1)
+            display_color = WATCHED_COLOR
         return display_color
 
-    def handle_press(self, instance):
+    def handle_press_movie(self, instance):
         """Handle pressing movie buttons."""
         # toggle watched / un watched
         if instance.movie.is_watched:
@@ -80,8 +81,8 @@ class MoviesToWatchApp(App):
         instance.text = self.display_watched(instance.movie)
         self.update_movie_buttons()
         # update movies to watch text
-        self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movies.get_number_un_watched(),
-                                                                      self.movies.get_number_watched())
+        self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movie_collection.get_number_un_watched(),
+                                                                      self.movie_collection.get_number_watched())
 
     def change_spinner_selection(self, new_sort_selection):
         """Handle changing spinner sort condition."""
@@ -89,26 +90,24 @@ class MoviesToWatchApp(App):
         self.update_movie_buttons()
 
     def update_movie_buttons(self):
-        self.movies.sort_movies(spinner_options_to_keyword[self.current_selection])
+        """Update movie button order in GUI."""
+        self.movie_collection.sort_movies(SPINNER_OPTIONS_TO_KEYWORD[self.current_selection])
         self.root.ids.entries_box.clear_widgets()
         self.create_widgets()
 
     def handle_press_add_movie(self, new_title, new_year, new_category):
+        """Handle adding a new movie object."""
         if self.is_valid_inputs(new_title, new_year, new_category):
-            self.movies.add_movie(Movie(new_title, int(new_year), new_category, False))
-            display_color = (1, 0, 1, 1)
+            self.movie_collection.add_movie(Movie(new_title, int(new_year), new_category, False))
             # create a button for new movie
             temp_button = Button(text="{} ({} from {})".format(new_title, new_category, new_year), id=new_title,
-                                 background_color=display_color)
-            temp_button.bind(on_release=self.handle_press)
+                                 background_color=UN_WATCHED_COLOR)
+            temp_button.bind(on_release=self.handle_press_movie)
             # Store a reference to the movie object in the button object
-            # new movie was appended to end of MovieCollection list therefore it is the last element currently
-            temp_button.movie = self.movies.movies[-1]
+            temp_button.movie = self.movie_collection.movies[-1]
             # clear text fields in entry boxes
             self.clear_fields()
             self.update_movie_buttons()
-
-        # TODO SORT MOVIES LIST
 
     def is_valid_inputs(self, title, year, category):
         """Check if user inputs meet requirements."""
@@ -136,6 +135,7 @@ class MoviesToWatchApp(App):
         return True
 
     def clear_fields(self):
+        """Clear text inputs and status bar on press."""
         self.root.ids.new_title.text = ''
         self.root.ids.new_year.text = ''
         self.root.ids.new_category.text = ''
@@ -150,6 +150,11 @@ class MoviesToWatchApp(App):
         button_display_text = instance.text = "{} ({} from {}) {}".format(instance.title, instance.category,
                                                                           instance.year, watched_string)
         return button_display_text
+
+    def on_stop(self):
+        """Run when the app exits and save movies to file."""
+        self.movie_collection.bool_to_status()
+        self.movie_collection.save_movies(FILE_NAME)
 
 
 if __name__ == '__main__':
