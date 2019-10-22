@@ -37,7 +37,6 @@ class MoviesToWatchApp(App):
         self.root = Builder.load_file('app.kv')
         self.sort_options = sorted(SPINNER_OPTIONS_TO_KEYWORD.keys())
         self.current_selection = self.sort_options[0]
-        # self.create_widgets()
         self.movies_to_watch_text = "To watch: {} Watched: {}".format(self.movie_collection.get_number_un_watched(),
                                                                       self.movie_collection.get_number_watched())
         return self.root
