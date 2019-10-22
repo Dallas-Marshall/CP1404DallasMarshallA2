@@ -9,6 +9,7 @@ INDEX_OF_STATUS = 3
 WATCHED = 'w'
 UNWATCHED = 'u'
 
+
 class MovieCollection:
     """A class to keep track of a list of Movie objects."""
 
@@ -45,10 +46,6 @@ class MovieCollection:
 
     def load_movies(self, file_name):
         """Read the file containing movies saving as a list."""
-        # index_of_title = 0
-        # index_of_year = 1
-        # index_of_category = 2
-        # index_of_status = 3
 
         in_file = open('{}'.format(file_name), 'r')
         for line in in_file:
